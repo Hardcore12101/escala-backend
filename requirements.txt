@@ -17,7 +17,6 @@ sqlalchemy
 alembic
 
 # Database drivers (PostgreSQL + SQLite fallback)
-psycopg2
 psycopg2-binary
 aiosqlite
 
