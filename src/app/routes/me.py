@@ -1,10 +1,14 @@
 from fastapi import APIRouter, Depends
-from src.app.core.deps import get_current_user
+from src.app.modules.auth.dependencies import get_current_user
+from src.app.modules.users.models import User
 
-router = APIRouter(prefix="/me", tags=["me"])
+router = APIRouter(prefix="/me", tags=["Me"])
 
-@router.get("/")
-def read_me(user: str = Depends(get_current_user)):
+
+@router.get("")
+def read_me(current_user: User = Depends(get_current_user)):
     return {
-        "username": user
+        "id": current_user.id,
+        "email": current_user.email,
+        "is_active": current_user.is_active,
     }

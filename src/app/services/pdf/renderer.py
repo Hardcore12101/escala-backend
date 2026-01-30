@@ -4,12 +4,12 @@ from pathlib import Path
 from datetime import date
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parents[4]
 PDF_DIR = BASE_DIR / "storage" / "guides"
 PDF_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def generate_guide_pdf(
+def render_guide_pdf(
     *,
     guide_id: int,
     company_name: str,
@@ -17,10 +17,10 @@ def generate_guide_pdf(
     tax_type: str,
     competence: str,
     amount: float,
-    due_date: date
+    due_date: date,
 ) -> str:
     """
-    Gera PDF da guia e retorna o caminho do arquivo
+    Renderiza o PDF da guia e retorna o caminho do arquivo
     """
 
     file_name = f"guia_{tax_type}_{competence}_{guide_id}.pdf"

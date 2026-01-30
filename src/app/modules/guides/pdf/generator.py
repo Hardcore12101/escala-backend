@@ -1,24 +1,20 @@
-from io import BytesIO
-from reportlab.lib.pagesizes import A4
-from reportlab.pdfgen import canvas
 from sqlalchemy.orm import Session
 from src.app.modules.guides.models import Guide
+from src.app.services.pdf.renderer import render_guide_pdf
 
-def generate_guide_pdf(db: Session, guide_id: int) -> bytes:
+
+def generate_guide_pdf(db: Session, guide_id: int) -> str:
     guide = db.query(Guide).filter(Guide.id == guide_id).first()
 
     if not guide:
         raise ValueError("Guia não encontrada")
 
-    # TEMPORÁRIO (só para validar fluxo)
-    content = f"""
-GUIA DE PAGAMENTO
-
-ID: {guide.id}
-Tipo: {guide.guide_type}
-Valor: {guide.amount}
-Vencimento: {guide.due_date}
-Status: {guide.status}
-"""
-
-    return content.encode("utf-8")
+    return render_guide_pdf(
+        guide_id=guide.id,
+        company_name=guide.company.name,
+        company_cnpj=guide.company.cnpj,
+        tax_type=guide.guide_type,
+        competence=guide.competence,
+        amount=guide.amount,
+        due_date=guide.due_date,
+    )
