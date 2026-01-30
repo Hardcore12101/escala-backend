@@ -2,12 +2,11 @@ from sqlalchemy import Table, Column, Integer, ForeignKey, String
 from src.app.database.base import Base
 from sqlalchemy.orm import relationship
 
-class UserCompanyRole(Base):
-    __tablename__ = "user_company_role"
+user_company_role = Table(
+    "user_company_role",
+    Base.metadata,
+    Column("user_id", ForeignKey("users.id"), primary_key=True),
+    Column("company_id", ForeignKey("companies.id"), primary_key=True),
+    Column("role", String, nullable=False),
+)
 
-    user_id = Column(ForeignKey("users.id"), primary_key=True)
-    company_id = Column(ForeignKey("companies.id"), primary_key=True)
-    role = Column(String, nullable=False)
-
-    user = relationship("User", back_populates="company_links")
-    company = relationship("Company", back_populates="user_links")
