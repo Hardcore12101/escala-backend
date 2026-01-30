@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from src.app.core.security import create_access_token
 from fastapi.security import OAuth2PasswordRequestForm
 
