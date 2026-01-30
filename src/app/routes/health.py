@@ -8,3 +8,8 @@ router = APIRouter(prefix="/health", tags=["Health"])
 )
 def health_check():
     return {"status": "ok"}
+
+@router.get("/db-test")
+def db_test(db: Session = Depends(get_db)):
+    db.execute("SELECT 1")
+    return {"ok": True}
