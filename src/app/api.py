@@ -11,6 +11,7 @@ from src.app.modules.apurations.router import router as apurations_router
 from src.app.modules.guides.router import router as guides_router
 from src.app.modules.guides.pdf_router import router as guides_pdf_router
 from src.app.modules.dashboard.router import router as dashboard_router
+from src.app.routes import bootstrap
 
 # Rotas técnicas
 from src.app.routes.me import router as me_router
@@ -40,7 +41,7 @@ api_router.include_router(dashboard_router)
 
 # Técnico autenticado
 api_router.include_router(me_router)
-
+api_router.include_router(bootstrap.router)
 
 @api_router.get("/")
 def root():

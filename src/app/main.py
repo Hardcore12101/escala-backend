@@ -12,14 +12,7 @@ app = FastAPI()
 
 @app.on_event("startup")
 def startup():
-    try:
-        db = SessionLocal()
-        seed_system_company(db)
-    except OperationalError as e:
-        # Loga e deixa a aplicação subir
-        print("Database not ready yet, seed skipped:", e)
-    finally:
-        db.close()
+    pass
 
 app.add_middleware(
     CORSMiddleware,
