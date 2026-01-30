@@ -1,6 +1,22 @@
+# Core
 fastapi
 uvicorn[standard]
+
+# Auth / Security
 python-jose[cryptography]
 passlib[bcrypt]
 python-multipart
+
+# Config
 pydantic-settings
+
+# Database / ORM
+sqlalchemy
+alembic
+
+# Database drivers (PostgreSQL + SQLite fallback)
+psycopg2-binary
+aiosqlite
+
+# Utils
+python-dotenv
