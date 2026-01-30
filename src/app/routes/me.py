@@ -6,7 +6,7 @@ from src.app.core.deps import get_current_context
 router = APIRouter(prefix="/me", tags=["Me"])
 
 @router.get("")
-def me(ctx: CurrentContext = Depends(get_current_context)):
+def me(ctx = Depends(get_current_context)):
     return {
         "user": ctx.user.email,
         "company": ctx.company.name,
