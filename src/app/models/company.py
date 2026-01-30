@@ -8,9 +8,3 @@ class Company(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     cnpj = Column(String, unique=True, index=True)
-
-    user_links = relationship(
-        "UserCompanyRole",
-        back_populates="company",
-        cascade="all, delete-orphan"
-    )
