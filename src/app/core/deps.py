@@ -5,15 +5,7 @@ from sqlalchemy.orm import Session
 from src.app.database.session import SessionLocal
 from src.app.database.association_roles import user_company_role
 from src.app.modules.users.models import User
-from src.app.core.security import get_current_user
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+from src.app.core.security import get_current_user, get_db
 
 
 def get_current_context(
