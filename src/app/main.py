@@ -12,7 +12,11 @@ app = FastAPI()
 
 @app.on_event("startup")
 def startup():
-    pass
+    db = SessionLocal()
+    try:
+        seed_system_company(db)
+    finally:
+        db.close()
 
 app.add_middleware(
     CORSMiddleware,

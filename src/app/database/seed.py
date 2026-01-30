@@ -4,21 +4,43 @@ from src.app.models.company import Company
 from src.app.modules.users.models import User
 from src.app.database.association_roles import user_company_role
 from src.app.modules.permissions.enums import RoleEnum
+from src.app.core.security import get_password_hash
 
 
 def seed_system_company(db: Session):
-    # Verifica se já existe
     company = db.query(Company).filter(Company.name == "Escala Digital").first()
-    if company:
-        return company
+    if not company:
+        company = Company(name="Escala Digital", cnpj="00000000000000")
+        db.add(company)
+        db.commit()
+        db.refresh(company)
 
-    company = Company(
-        name="Escala Digital",
-        cnpj="00000000000000"
-    )
+    # USER ADMIN
+    admin = db.query(User).filter(User.email == "admin@escaladigital.com").first()
+    if not admin:
+        admin = User(
+            email="admin@escaladigital.com",
+            hashed_password=get_password_hash("Admin@123"),
+            is_active=True,
+        )
+        db.add(admin)
+        db.commit()
+        db.refresh(admin)
 
-    db.add(company)
-    db.commit()
-    db.refresh(company)
+    # ROLE (idempotente)
+    exists = db.execute(
+        user_company_role.select().where(
+            (user_company_role.c.user_id == admin.id) &
+            (user_company_role.c.company_id == company.id)
+        )
+    ).first()
 
-    return company
+    if not exists:
+        db.execute(
+            user_company_role.insert().values(
+                user_id=admin.id,
+                company_id=company.id,
+                role=RoleEnum.admin.value,
+            )
+        )
+        db.commit()
