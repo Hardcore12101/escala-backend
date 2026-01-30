@@ -1,5 +1,5 @@
 from fastapi import APIRouter, status, Depends
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, text
 from src.app.core.security import get_db
 
 router = APIRouter(prefix="/health", tags=["Health"])
