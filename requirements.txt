@@ -8,7 +8,9 @@ passlib[bcrypt]
 python-multipart
 
 # Config
+pydantic
 pydantic-settings
+email-validator
 
 # Database / ORM
 sqlalchemy
