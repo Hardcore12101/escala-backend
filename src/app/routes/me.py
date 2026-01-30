@@ -5,15 +5,10 @@ from src.app.core.deps import get_current_context
 
 router = APIRouter(prefix="/me", tags=["Me"])
 
-@router.get("/context")
-def get_me_context(context=Depends(get_current_context)):
+@router.get("")
+def me(ctx: CurrentContext = Depends(get_current_context)):
     return {
-        "user": {
-            "id": context["user"].id,
-            "email": context["user"].email,
-        },
-        "company": {
-            "id": context["company_id"],
-        },
-        "role": context["role"],
+        "user": ctx.user.email,
+        "company": ctx.company.name,
+        "role": ctx.role,
     }
