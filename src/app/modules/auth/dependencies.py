@@ -8,7 +8,7 @@ from src.app.database.dependencies import get_db
 from src.app.modules.users.models import User
 from src.app.modules.audit.service import log_event
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 
 
 def get_current_user(
