@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from app.database.association_roles import user_company_role
-from app.modules.permissions.enums import RoleEnum
+from src.app.database.association_roles import user_company_role
+from src.app.modules.permissions.enums import RoleEnum
 
 
 def assign_role(

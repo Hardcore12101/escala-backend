@@ -1,8 +1,8 @@
 from datetime import date
 from sqlalchemy.orm import Session
 
-from app.modules.tax_rules.models import TaxRule
-from app.modules.audit.service import log_event
+from src.app.modules.tax_rules.models import TaxRule
+from src.app.modules.audit.service import log_event
 
 
 def create_tax_rule(

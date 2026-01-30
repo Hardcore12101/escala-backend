@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from app.database.dependencies import get_db
-from app.modules.auth.dependencies import get_current_user
-from app.modules.users.models import User
-from app.modules.tax_rules.schemas import TaxRuleCreate, TaxRuleResponse
-from app.modules.tax_rules.service import create_tax_rule
+from src.app.database.dependencies import get_db
+from src.app.modules.auth.dependencies import get_current_user
+from src.app.modules.users.models import User
+from src.app.modules.tax_rules.schemas import TaxRuleCreate, TaxRuleResponse
+from src.app.modules.tax_rules.service import create_tax_rule
 
 router = APIRouter(prefix="/tax-rules", tags=["Tax Rules"])
 

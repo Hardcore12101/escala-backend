@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from app.modules.users.models import User
-from app.modules.auth.security import verify_password, create_access_token
-from app.modules.audit.service import log_event
+from src.app.modules.users.models import User
+from src.app.modules.auth.security import verify_password, create_access_token
+from src.app.modules.audit.service import log_event
 
 
 def authenticate_user(db: Session, email: str, password: str) -> str | None:

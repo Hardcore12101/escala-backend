@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
-from app.database.dependencies import get_db
-from app.models.company import Company
-from app.schemas.company import CompanyCreate, CompanyUpdate, CompanyOut
-from app.schemas.pagination import PaginatedResponse
+from src.app.database.dependencies import get_db
+from src.app.models.company import Company
+from src.app.schemas.company import CompanyCreate, CompanyUpdate, CompanyOut
+from src.app.schemas.pagination import PaginatedResponse
 
 
 router = APIRouter()

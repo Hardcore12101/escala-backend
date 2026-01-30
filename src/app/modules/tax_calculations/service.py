@@ -2,9 +2,9 @@ from datetime import date
 from decimal import Decimal
 from sqlalchemy.orm import Session
 
-from app.modules.tax_rules.models import TaxRule
-from app.modules.tax_calculations.models import TaxCalculation
-from app.modules.audit.service import log_event
+from src.app.modules.tax_rules.models import TaxRule
+from src.app.modules.tax_calculations.models import TaxCalculation
+from src.app.modules.audit.service import log_event
 
 
 def calculate_tax(

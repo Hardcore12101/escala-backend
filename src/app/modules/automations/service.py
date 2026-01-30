@@ -1,9 +1,9 @@
 from datetime import date
 from sqlalchemy.orm import Session
 
-from app.modules.obligations.models import Obligation
-from app.modules.obligations.enums import ObligationStatus
-from app.modules.audit.service import log_event
+from src.app.modules.obligations.models import Obligation
+from src.app.modules.obligations.enums import ObligationStatus
+from src.app.modules.audit.service import log_event
 
 
 def update_overdue_obligations(db: Session):

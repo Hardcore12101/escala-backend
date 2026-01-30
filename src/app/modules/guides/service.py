@@ -2,11 +2,11 @@ from datetime import date
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 
-from app.modules.apurations.models import Apuration
-from app.modules.guides.models import Guide
-from app.models.company import Company
-from app.modules.audit.service import log_event
-from app.services.pdf.guide_pdf import generate_guide_pdf
+from src.app.modules.apurations.models import Apuration
+from src.app.modules.guides.models import Guide
+from src.app.models.company import Company
+from src.app.modules.audit.service import log_event
+from src.app.services.pdf.guide_pdf import generate_guide_pdf
 
 
 def generate_guide(

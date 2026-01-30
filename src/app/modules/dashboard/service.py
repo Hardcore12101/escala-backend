@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
-from app.modules.apurations.models import Apuration
-from app.modules.guides.models import Guide
+from src.app.modules.apurations.models import Apuration
+from src.app.modules.guides.models import Guide
 
 
 def get_dashboard_summary(db: Session, company_id: int):

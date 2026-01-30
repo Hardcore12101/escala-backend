@@ -1,9 +1,9 @@
 from sqlalchemy import Column, Integer, String, Date, Enum, ForeignKey
 from sqlalchemy.orm import relationship
 
-from app.database.base import Base
+from src.app.database.base import Base
 
-from app.modules.obligations.enums import ObligationType, ObligationStatus
+from src.app.modules.obligations.enums import ObligationType, ObligationStatus
 
 
 class Obligation(Base):

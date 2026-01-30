@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from app.database.dependencies import get_db
-from app.modules.auth.dependencies import get_current_user
-from app.modules.users.models import User
-from app.modules.apurations.schemas import ApurationCreate, ApurationResponse
-from app.modules.apurations.service import close_month
+from src.app.database.dependencies import get_db
+from src.app.modules.auth.dependencies import get_current_user
+from src.app.modules.users.models import User
+from src.app.modules.apurations.schemas import ApurationCreate, ApurationResponse
+from src.app.modules.apurations.service import close_month
 
 router = APIRouter(prefix="/apurations", tags=["Apurations"])
 

@@ -1,14 +1,14 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from app.database.dependencies import get_db
-from app.modules.auth.dependencies import get_current_user
-from app.modules.users.models import User
-from app.modules.obligations.schemas import (
+from src.app.database.dependencies import get_db
+from src.app.modules.auth.dependencies import get_current_user
+from src.app.modules.users.models import User
+from src.app.modules.obligations.schemas import (
     ObligationCreate,
     ObligationResponse,
 )
-from app.modules.obligations.service import create_obligation
+from src.app.modules.obligations.service import create_obligation
 
 router = APIRouter(prefix="/obligations", tags=["Obligations"])
 

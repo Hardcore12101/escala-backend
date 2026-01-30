@@ -1,16 +1,16 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.responses import StreamingResponse
-from app.modules.guides.pdf.generator import generate_guide_pdf
+from src.app.modules.guides.pdf.generator import generate_guide_pdf
 
-from app.database.dependencies import get_db
-from app.modules.auth.dependencies import get_current_user
-from app.modules.users.models import User
-from app.modules.guides.schemas import GuideCreate, GuideResponse
-from app.modules.guides.service import generate_guide
-from app.modules.guides.models import Guide
-from app.modules.guides.schemas import GuideOut, GuidePayRequest
-from app.modules.guides.service import pay_guide
+from src.app.database.dependencies import get_db
+from src.app.modules.auth.dependencies import get_current_user
+from src.app.modules.users.models import User
+from src.app.modules.guides.schemas import GuideCreate, GuideResponse
+from src.app.modules.guides.service import generate_guide
+from src.app.modules.guides.models import Guide
+from src.app.modules.guides.schemas import GuideOut, GuidePayRequest
+from src.app.modules.guides.service import pay_guide
 
 
 

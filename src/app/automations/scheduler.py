@@ -1,7 +1,7 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from app.database.session import SessionLocal
-from app.modules.automations.service import update_overdue_obligations
+from src.app.database.session import SessionLocal
+from src.app.modules.automations.service import update_overdue_obligations
 
 
 def start_scheduler():

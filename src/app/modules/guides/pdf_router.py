@@ -3,10 +3,10 @@ from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 import io
 
-from app.database.dependencies import get_db
-from app.modules.auth.dependencies import get_current_user
-from app.modules.users.models import User
-from app.modules.guides.pdf import generate_guide_pdf
+from src.app.database.dependencies import get_db
+from src.app.modules.auth.dependencies import get_current_user
+from src.app.modules.users.models import User
+from src.app.modules.guides.pdf import generate_guide_pdf
 
 router = APIRouter(prefix="/guides", tags=["Guides"])
 

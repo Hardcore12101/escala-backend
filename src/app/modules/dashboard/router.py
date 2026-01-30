@@ -1,14 +1,14 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from app.database.dependencies import get_db
-from app.modules.dashboard.service import get_dashboard_summary
-from app.modules.dashboard.schemas import DashboardSummary
-from app.modules.dashboard.schemas import DashboardByCompetence
-from app.modules.dashboard.service import get_dashboard_by_competence
-from app.modules.dashboard.schemas import DashboardByTaxType
-from app.modules.dashboard.service import get_dashboard_by_tax_type
-from app.modules.auth.dependencies import get_current_user
+from src.app.database.dependencies import get_db
+from src.app.modules.dashboard.service import get_dashboard_summary
+from src.app.modules.dashboard.schemas import DashboardSummary
+from src.app.modules.dashboard.schemas import DashboardByCompetence
+from src.app.modules.dashboard.service import get_dashboard_by_competence
+from src.app.modules.dashboard.schemas import DashboardByTaxType
+from src.app.modules.dashboard.service import get_dashboard_by_tax_type
+from src.app.modules.auth.dependencies import get_current_user
 
 router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
 

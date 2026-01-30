@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from fastapi import HTTPException
-from app.modules.tax_calculations.models import TaxCalculation
-from app.modules.apurations.models import Apuration
-from app.modules.audit.service import log_event
+from src.app.modules.tax_calculations.models import TaxCalculation
+from src.app.modules.apurations.models import Apuration
+from src.app.modules.audit.service import log_event
 
 
 def close_month(

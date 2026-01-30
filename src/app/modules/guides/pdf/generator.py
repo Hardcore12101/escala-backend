@@ -2,7 +2,7 @@ from io import BytesIO
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from sqlalchemy.orm import Session
-from app.modules.guides.models import Guide
+from src.app.modules.guides.models import Guide
 
 def generate_guide_pdf(db: Session, guide_id: int) -> bytes:
     guide = db.query(Guide).filter(Guide.id == guide_id).first()

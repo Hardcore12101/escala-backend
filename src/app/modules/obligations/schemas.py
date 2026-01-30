@@ -1,6 +1,6 @@
 from datetime import date
 from pydantic import BaseModel
-from app.modules.obligations.enums import ObligationType, ObligationStatus
+from src.app.modules.obligations.enums import ObligationType, ObligationStatus
 
 
 class ObligationCreate(BaseModel):

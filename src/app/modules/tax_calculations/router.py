@@ -1,14 +1,14 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from app.database.dependencies import get_db
-from app.modules.auth.dependencies import get_current_user
-from app.modules.users.models import User
-from app.modules.tax_calculations.schemas import (
+from src.app.database.dependencies import get_db
+from src.app.modules.auth.dependencies import get_current_user
+from src.app.modules.users.models import User
+from src.app.modules.tax_calculations.schemas import (
     TaxCalculationCreate,
     TaxCalculationResponse,
 )
-from app.modules.tax_calculations.service import calculate_tax
+from src.app.modules.tax_calculations.service import calculate_tax
 
 router = APIRouter(
     prefix="/tax-calculations",

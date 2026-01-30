@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, Numeric, ForeignKey, Date
 from sqlalchemy.orm import relationship
 
-from app.database.base import Base
+from src.app.database.base import Base
 
 
 

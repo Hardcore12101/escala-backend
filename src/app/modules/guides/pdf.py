@@ -3,7 +3,7 @@ from reportlab.pdfgen import canvas
 from sqlalchemy.orm import Session
 from datetime import date
 
-from app.modules.guides.models import Guide
+from src.app.modules.guides.models import Guide
 
 
 def generate_guide_pdf(db: Session, guide_id: int) -> bytes:
