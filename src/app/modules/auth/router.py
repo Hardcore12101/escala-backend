@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from src.app.core.security import create_access_token
 from fastapi.security import OAuth2PasswordRequestForm
 from src.app.database.session import SessionLocal
-from src.app.database.session import get_db
+from src.app.database.deps import get_db
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
