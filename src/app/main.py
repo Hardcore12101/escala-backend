@@ -1,9 +1,19 @@
 from fastapi import FastAPI
+from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 from src.app.routes.health import router as health_router
 from src.app.api import api_router
+from src.app.database.session import SessionLocal
+from src.app.database.seed import seed_system_company
 
 app = FastAPI()
+
+
+@app.on_event("startup")
+def startup():
+    db: Session = SessionLocal()
+    seed_system_company(db)
+    db.close()
 
 app.add_middleware(
     CORSMiddleware,
