@@ -3,6 +3,7 @@ from src.app.core.security import create_access_token
 from fastapi.security import OAuth2PasswordRequestForm
 from src.app.database.session import SessionLocal
 from src.app.core.security import get_db
+from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
