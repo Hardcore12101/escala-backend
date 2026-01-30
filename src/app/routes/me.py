@@ -1,14 +1,19 @@
 from fastapi import APIRouter, Depends
 from src.app.modules.auth.dependencies import get_current_user
 from src.app.modules.users.models import User
+from src.app.core.deps import get_current_context
 
 router = APIRouter(prefix="/me", tags=["Me"])
 
-
-@router.get("")
-def read_me(current_user: User = Depends(get_current_user)):
+@router.get("/context")
+def get_me_context(context=Depends(get_current_context)):
     return {
-        "id": current_user.id,
-        "email": current_user.email,
-        "is_active": current_user.is_active,
+        "user": {
+            "id": context["user"].id,
+            "email": context["user"].email,
+        },
+        "company": {
+            "id": context["company_id"],
+        },
+        "role": context["role"],
     }

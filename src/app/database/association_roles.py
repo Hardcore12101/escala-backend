@@ -7,6 +7,5 @@ user_company_role = Table(
     Base.metadata,
     Column("user_id", ForeignKey("users.id"), primary_key=True),
     Column("company_id", ForeignKey("companies.id"), primary_key=True),
-    Column("role", String, nullable=False),
+    Column("role", String(50), nullable=False),
 )
-
