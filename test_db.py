@@ -1,4 +1,4 @@
-from app.database.session import engine
+from src.app.database.session import engine
 
 print("Conectando ao banco...")
 engine.connect()

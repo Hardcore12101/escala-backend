@@ -4,18 +4,18 @@ import os
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
 sys.path.insert(0, BASE_DIR)
 
-from app.core.config import settings
-from app.database.base import Base
+from src.app.core.config import settings
+from src.app.database.base import Base
 
-from app.modules.users.models import User
-from app.models.company import Company
-from app.modules.audit.models import AuditLog
-from app.modules.obligations.models import Obligation
-from app.modules.apurations.models import Apuration
-from app.modules.tax_rules.models import TaxRule
-from app.modules.tax_calculations.models import TaxCalculation
-from app.modules.guides.models import Guide
-from app.database.session import engine
+from src.app.modules.users.models import User
+from src.app.models.company import Company
+from src.app.modules.audit.models import AuditLog
+from src.app.modules.obligations.models import Obligation
+from src.app.modules.apurations.models import Apuration
+from src.app.modules.tax_rules.models import TaxRule
+from src.app.modules.tax_calculations.models import TaxCalculation
+from src.app.modules.guides.models import Guide
+from src.app.database.session import engine
 
 from logging.config import fileConfig
 from sqlalchemy import engine_from_config
