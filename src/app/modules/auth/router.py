@@ -1,9 +1,9 @@
 from fastapi import APIRouter, HTTPException, Depends
-from src.app.core.security import create_access_token
+from src.app.core.security import create_access_token, get_db
 from fastapi.security import OAuth2PasswordRequestForm
 from src.app.database.session import SessionLocal
-from src.app.core.security import get_db
 from sqlalchemy.orm import Session
+from src.app.modules.auth.service import authenticate_user
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
@@ -15,6 +15,18 @@ def login(
 ):
     user = authenticate_user(
         db,
-        email=form_data.username,  # username = email
+        email=form_data.username,
         password=form_data.password,
     )
+
+    if not user:
+        raise HTTPException(status_code=401, detail="Credenciais inválidas")
+
+    access_token = create_access_token(
+        data={"sub": str(user.id)}
+    )
+
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+    }
