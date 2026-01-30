@@ -1,5 +1,6 @@
 from sqlalchemy import Table, Column, Integer, ForeignKey, String
 from src.app.database.base import Base
+from sqlalchemy.orm import relationship
 
 class UserCompanyRole(Base):
     __tablename__ = "user_company_role"
