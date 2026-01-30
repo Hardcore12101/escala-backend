@@ -1,15 +1,23 @@
 from pydantic import BaseModel
+from typing import Optional
 
 
-class CompanyCreate(BaseModel):
+class CompanyBase(BaseModel):
     name: str
     cnpj: str
 
 
-class CompanyResponse(BaseModel):
+class CompanyCreate(CompanyBase):
+    pass
+
+
+class CompanyUpdate(BaseModel):
+    name: Optional[str] = None
+    cnpj: Optional[str] = None
+
+
+class CompanyResponse(CompanyBase):
     id: int
-    name: str
-    cnpj: str
 
     class Config:
         from_attributes = True
