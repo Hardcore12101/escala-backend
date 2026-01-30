@@ -10,7 +10,7 @@ from src.app.core.config import settings
 from src.app.database.session import SessionLocal
 from src.app.modules.users.models import User
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_PREFIX}/auth/login")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def get_db():

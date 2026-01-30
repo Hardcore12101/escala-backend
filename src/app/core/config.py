@@ -1,16 +1,16 @@
-from pydantic_settings import BaseSettings
-from pathlib import Path
-
-BASE_DIR = Path(__file__).resolve().parents[3]
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class AppSettings(BaseSettings):
     # App
-    app_name: str = "Escala Digital"
-    debug: bool = True
+    APP_NAME: str = "Escala Digital"
+    DEBUG: bool = False
 
     # Frontend
-    vite_api_url: str = "http://localhost:5173"
+    VITE_API_URL: str = "http://localhost:5173"
+
+    # API
+    API_PREFIX: str = "/api"
 
     # Security
     SECRET_KEY: str
@@ -20,9 +20,12 @@ class AppSettings(BaseSettings):
     # Database
     DATABASE_URL: str
 
-    class Config:
-        env_file = BASE_DIR / ".env"
-        extra = "forbid"
+    model_config = SettingsConfigDict(
+        env_file=".env",          # usado local
+        env_ignore_empty=True,    # produção segura
+        extra="forbid",
+        case_sensitive=True,
+    )
 
 
 settings = AppSettings()
