@@ -21,9 +21,11 @@ def login(
     if not user:
         raise HTTPException(status_code=401, detail="Credenciais inválidas")
 
-    token = create_access_token({"sub": str(user.id)})
+    access_token = create_access_token(
+        {"sub": str(user.id)}
+    )
 
     return {
-        "access_token": token,
+        "access_token": access_token,
         "token_type": "bearer",
     }
