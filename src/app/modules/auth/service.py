@@ -4,21 +4,20 @@ from src.app.modules.auth.security import verify_password, create_access_token
 from src.app.modules.audit.service import log_event
 
 
-def authenticate_user(db: Session, email: str, password: str) -> str | None:
-    user = db.query(User).filter(User.email == email).first()
-    if not user:
-        return None
+def authenticate_user(db, email: str, password: str):
+    user = get_user_by_email(db, email)
 
-    if not verify_password(password, user.hashed_password):
-        return None
+    if not user or not verify_password(password, user.hashed_password):
+        raise HTTPException(status_code=401, detail="Credenciais inválidas")
 
-    token = create_access_token({"sub": str(user.id)})
-
-    log_event(
-        db,
-        action="LOGIN",
-        entity="user",
-        entity_id=user.id,
+    access_token = create_access_token(
+        data={"sub": str(user.id)},
+        expires_delta=timedelta(
+            minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
+        ),
     )
 
-    return token
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+    }
