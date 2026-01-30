@@ -6,8 +6,7 @@ from src.app.modules.apurations.models import Apuration
 from src.app.modules.guides.models import Guide
 from src.app.models.company import Company
 from src.app.modules.audit.service import log_event
-from src.app.services.pdf.renderer import generate_guide_pdf
-
+from src.app.modules.guides.pdf import generate_guide_pdf
 
 def generate_guide(
     db: Session,

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.responses import StreamingResponse
-from src.app.modules.guides.pdf.generator import generate_guide_pdf
+from src.app.modules.guides.pdf import generate_guide_pdf
 
 from src.app.database.dependencies import get_db
 from src.app.modules.auth.dependencies import get_current_user
