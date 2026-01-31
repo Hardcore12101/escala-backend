@@ -15,16 +15,26 @@ depends_on = None
 
 
 def upgrade():
-    # 1. remover PK antiga
-    op.drop_constraint("users_pkey", "users", type_="primary")
+    conn = op.get_bind()
 
-    # 2. remover coluna id antiga (int)
-    op.drop_column("users", "id")
+    # remove PK atual (qualquer nome)
+    conn.execute(sa.text("""
+        DO $$
+        DECLARE
+            constraint_name text;
+        BEGIN
+            SELECT conname INTO constraint_name
+            FROM pg_constraint
+            WHERE conrelid = 'users'::regclass
+              AND contype = 'p';
 
-    # 3. renomear id_uuid → id
-    op.alter_column("users", "id_uuid", new_column_name="id")
+            IF constraint_name IS NOT NULL THEN
+                EXECUTE format('ALTER TABLE users DROP CONSTRAINT %I', constraint_name);
+            END IF;
+        END$$;
+    """))
 
-    # 4. criar nova PK UUID
+    # recria PK corretamente
     op.create_primary_key("users_pkey", "users", ["id"])
 
 
