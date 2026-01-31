@@ -18,7 +18,7 @@ class AuditLog(Base):
     entity = Column(String, nullable=True)
     entity_id = Column(Integer, nullable=True)
 
-    metadata = Column(JSON, nullable=True)
+    extra = Column("metadata", JSON, nullable=True)
 
     created_at = Column(
         DateTime(timezone=True),
