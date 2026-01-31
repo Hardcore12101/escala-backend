@@ -1,34 +1,31 @@
 from datetime import datetime, timedelta, timezone
 from typing import Optional
-from uuid import UUID
 
-from passlib.context import CryptContext
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
+from passlib.context import CryptContext
 from sqlalchemy.orm import Session
+from uuid import UUID
 
 from src.app.core.config import settings
 from src.app.database.session import SessionLocal
 from src.app.modules.users.models import User
 
-# =========================
-# OAuth / Password
-# =========================
 
+# OAuth
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_PREFIX}/auth/login"
 )
 
+# Password hashing
 pwd_context = CryptContext(
     schemes=["bcrypt"],
     deprecated="auto"
 )
 
-# =========================
-# Database
-# =========================
 
+# DB dependency
 def get_db():
     db = SessionLocal()
     try:
@@ -36,9 +33,30 @@ def get_db():
     finally:
         db.close()
 
-# =========================
-# Auth Helpers
-# =========================
+
+# Password helpers
+def get_password_hash(password: str) -> str:
+    return pwd_context.hash(password)
+
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return pwd_context.verify(plain_password, hashed_password)
+
+
+# JWT helpers
+def create_access_token(data: dict):
+    to_encode = data.copy()
+    expire = datetime.now(timezone.utc) + timedelta(
+        minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
+    )
+    to_encode.update({"exp": expire})
+
+    return jwt.encode(
+        to_encode,
+        settings.SECRET_KEY,
+        algorithm=settings.ALGORITHM,
+    )
+
 
 def get_current_user(
     token: str = Depends(oauth2_scheme),
@@ -61,12 +79,14 @@ def get_current_user(
         if not user_id:
             raise credentials_exception
 
-    except JWTError:
+        user_uuid = UUID(user_id)
+
+    except (JWTError, ValueError):
         raise credentials_exception
 
     user = (
         db.query(User)
-        .filter(User.id == UUID(user_id))
+        .filter(User.id == user_uuid)
         .first()
     )
 
@@ -74,33 +94,3 @@ def get_current_user(
         raise credentials_exception
 
     return user
-
-
-def create_access_token(data: dict) -> str:
-    to_encode = data.copy()
-
-    expire = datetime.now(timezone.utc) + timedelta(
-        minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES
-    )
-
-    to_encode.update({"exp": expire})
-
-    return jwt.encode(
-        to_encode,
-        settings.SECRET_KEY,
-        algorithm=settings.ALGORITHM,
-    )
-
-
-def get_password_hash(password: str) -> str:
-    return pwd_context.hash(password)
-
-
-def verify_password(
-    plain_password: str,
-    hashed_password: str
-) -> bool:
-    return pwd_context.verify(
-        plain_password,
-        hashed_password
-    )
