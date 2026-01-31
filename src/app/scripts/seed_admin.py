@@ -1,5 +1,5 @@
+import src.app.models
 from sqlalchemy.orm import Session
-
 from src.app.database.session import SessionLocal
 from src.app.modules.users.models import User
 from src.app.core.security import get_password_hash
