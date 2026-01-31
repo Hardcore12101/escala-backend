@@ -7,41 +7,18 @@ from src.app.modules.auth.service import authenticate_user
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
 
-@router.post("/login")
+@router.post("/login", response_model=Token)
 def login(
-    form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db),
+    form_data: OAuth2PasswordRequestForm = Depends()
 ):
-    user = authenticate_user(
-        db,
-        email=form_data.username,
-        password=form_data.password,
-    )
+    user = authenticate_user(db, form_data.username, form_data.password)
 
-    if not user:
-        raise HTTPException(status_code=401, detail="Credenciais inválidas")
-
-    access_token = create_access_token(
-        {"sub": str(user.id)}
-    )
-
-    return {
-        "access_token": access_token,
-        "token_type": "bearer",
-    }
-
-
-@router.get("/debug/password-test")
-def debug_password():
-    from src.app.core.security import verify_password, get_password_hash
-
-    senha = "Escala123!"
-    hash_banco = "$2b$12$AyMt8yT.odXDHxwk.6J/2OjcXY0Ee0qlCJR.W7fFJdVw89ELhs78K"
-
-    return {
-        "verify_with_db_hash": verify_password(senha, hash_banco),
-        "verify_with_new_hash": verify_password(
-            senha,
-            get_password_hash(senha)
+    if not user or not user.is_active:
+        raise HTTPException(
+            status_code=401,
+            detail="Incorrect email or password"
         )
-    }
+
+    access_token = create_access_token(subject=str(user.id))
+    return {"access_token": access_token, "token_type": "bearer"}
