@@ -3,7 +3,7 @@ from src.app.database.base import Base
 from src.app.database.association_roles import user_company_role
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-import uuid
+from uuid import UUID, uuid4
 from sqlalchemy.dialects.postgresql import UUID
 from src.app.models.company import Company
 
