@@ -57,14 +57,8 @@ def create_access_token(subject: str, expires_delta: timedelta | None = None):
 
 def get_current_user(
     token: str = Depends(oauth2_scheme),
-    db: Session = Depends(get_db),
+    db: Session = Depends(SessionLocal),
 ) -> User:
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Token inválido ou expirado",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-
     try:
         payload = jwt.decode(
             token,
@@ -72,8 +66,8 @@ def get_current_user(
             algorithms=[settings.ALGORITHM],
         )
 
-        user_id: Optional[str] = payload.get("sub")
-        if not user_id:
+        user_id: str | None = payload.get("sub")
+        if user_id is None:
             raise credentials_exception
 
         user_uuid = UUID(user_id)
@@ -81,13 +75,24 @@ def get_current_user(
     except (JWTError, ValueError):
         raise credentials_exception
 
-    user = (
-        db.query(User)
-        .filter(User.id == user_uuid)
-        .first()
-    )
-
-    if not user or not user.is_active:
+    user = db.query(User).filter(User.id == user_uuid).first()
+    if not user:
         raise credentials_exception
 
+    if not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Inactive user",
+        )
+
     return user
+
+def admin_only(
+    current_user: User = Depends(get_current_user),
+) -> User:
+    if current_user.role != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin privileges required",
+        )
+    return current_user
