@@ -9,6 +9,8 @@ from src.app.modules.users.models import User
 from src.app.modules.users.schemas import UserCreate, UserResponse, UserUpdate
 from src.app.modules.users.service import create_user, update_user
 from src.app.core.security import admin_only
+from uuid import UUID
+from sqlalchemy.dialects.postgresql import UUID
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
