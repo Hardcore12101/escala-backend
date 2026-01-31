@@ -1,6 +1,7 @@
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import or_
-
+from uuid import UUID
 from src.app.models.company import Company
 from src.app.modules.users.models import User
 from src.app.modules.audit.service import log_event
@@ -134,4 +135,47 @@ def delete_company(
         user_id=str(user.id),
         entity="company",
         entity_id=company_id,
+    )
+
+
+def add_user_to_company(
+    *,
+    db: Session,
+    current_user: User,
+    target_user_id: UUID,
+    company_id: UUID,
+    role: str,
+):
+    # 1️⃣ Verifica se a empresa existe
+    company = db.query(Company).filter(Company.id == company_id).first()
+    if not company:
+        raise HTTPException(status_code=404, detail="Empresa não encontrada")
+
+    # 2️⃣ Verifica se o usuário alvo existe
+    target_user = db.query(User).filter(User.id == target_user_id).first()
+    if not target_user:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+
+    # 3️⃣ Evita vínculo duplicado
+    if target_user in company.users:
+        raise HTTPException(
+            status_code=400,
+            detail="Usuário já vinculado à empresa",
+        )
+
+    # 4️⃣ Faz o vínculo
+    company.users.append(target_user)
+    db.commit()
+
+    # 5️⃣ Auditoria (obrigatória no seu projeto)
+    log_event(
+        db=db,
+        action="ADD_USER_TO_COMPANY",
+        user_id=str(current_user.id),
+        entity="company",
+        entity_id=str(company_id),
+        extra={
+            "target_user_id": str(target_user_id),
+            "role": role,
+        },
     )
