@@ -76,6 +76,7 @@ def generate_guide(
     log_event(
         db=db,
         action="GENERATE_GUIDE",
+        user_id=str(user.id),
         entity="guide",
         entity_id=guide.id,
     )
@@ -105,6 +106,7 @@ def pay_guide(
     log_event(
         db,
         action="PAY_GUIDE",
+        user_id=str(user.id),
         entity="guide",
         entity_id=guide.id,
     )

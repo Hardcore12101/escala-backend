@@ -33,6 +33,7 @@ def create_tax_rule(
     log_event(
         db,
         action="CREATE_TAX_RULE",
+        user_id=str(user.id),
         entity="tax_rule",
         entity_id=rule.id,
     )

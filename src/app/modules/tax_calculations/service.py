@@ -41,6 +41,7 @@ def calculate_tax(
     log_event(
         db,
         action="CALCULATE_TAX",
+        user_id=str(user.id),
         entity="tax_calculation",
         entity_id=calculation.id,
     )

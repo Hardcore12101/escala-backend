@@ -20,6 +20,7 @@ def update_overdue_obligations(db: Session):
         log_event(
             db,
             action="OBLIGATION_OVERDUE",
+            user_id=str(user.id),
             entity="obligation",
             entity_id=obligation.id,
         )

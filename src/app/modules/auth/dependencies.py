@@ -40,6 +40,7 @@ def get_current_user(
     log_event(
         db,
         action="ACCESS_ROUTE",
+        user_id=str(user.id),
         entity="user",
         entity_id=user.id,
     )

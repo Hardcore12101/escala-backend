@@ -18,6 +18,7 @@ def create_user(db: Session, email: str, password: str) -> User:
     log_event(
         db,
         action="CREATE_USER",
+        user_id=str(user.id),
         entity="user",
         entity_id=user.id,
     )

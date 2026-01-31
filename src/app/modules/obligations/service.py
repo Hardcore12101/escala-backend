@@ -27,6 +27,7 @@ def create_obligation(
     log_event(
         db,
         action="CREATE_OBLIGATION",
+        user_id=str(user.id),
         entity="obligation",
         entity_id=obligation.id,
     )

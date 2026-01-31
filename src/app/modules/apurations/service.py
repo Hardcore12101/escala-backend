@@ -38,6 +38,7 @@ def close_month(
     log_event(
         db,
         action="CLOSE_MONTH",
+        user_id=str(user.id),
         entity="apuration",
         entity_id=apuration.id,
     )

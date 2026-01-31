@@ -26,6 +26,7 @@ def create_company(
     log_event(
         db,
         action="CREATE_COMPANY",
+        user_id=str(user.id),
         entity="company",
         entity_id=company.id,
     )
@@ -101,6 +102,7 @@ def update_company(
     log_event(
         db,
         action="UPDATE_COMPANY",
+        user_id=str(user.id),
         entity="company",
         entity_id=company.id,
     )
@@ -129,6 +131,7 @@ def delete_company(
     log_event(
         db,
         action="DELETE_COMPANY",
+        user_id=str(user.id),
         entity="company",
         entity_id=company_id,
     )
