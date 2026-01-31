@@ -10,7 +10,8 @@ from src.app.modules.users.schemas import UserCreate, UserResponse, UserUpdate
 from src.app.modules.users.service import create_user, update_user
 from src.app.core.security import admin_only
 from uuid import UUID
-from sqlalchemy.dialects.postgresql import UUID
+from src.app.modules.companies.service import add_user_to_company
+from src.app.modules.users.schemas import AddUserToCompanySchema
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -53,7 +54,7 @@ def update_user_route(
 
 @router.post("/make-admin/{user_id}")
 def make_system_admin(
-    user_id: int,
+    user_id: UUID,
     db: Session = Depends(get_db),
     current_user: User = Depends(admin_only),
 ):
@@ -76,18 +77,20 @@ def make_system_admin(
     return {"ok": True}
     
     
-@router.post("/companies/{company_id}/users")
-def add_user(
-    company_id: int,
-    user_id: UUID,
-    role: str,
+@router.post(
+    "/companies/{company_id}/users",
+    response_model=None,
+)
+def add_user_to_company_route(
+    company_id: UUID,
+    data: AddUserToCompanySchema,
     db: Session = Depends(get_db),
     current_user: User = Depends(admin_only),
 ):
-    return add_user_to_company(
-        db,
-        user_id=user_id,
+    add_user_to_company(
+        db=db,
+        current_user=current_user,
+        target_user_id=data.user_id,
         company_id=company_id,
-        role=role,
-        admin_user=current_user,
+        role=data.role,
     )

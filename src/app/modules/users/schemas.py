@@ -18,3 +18,7 @@ class UserResponse(BaseModel):
 class UserUpdate(BaseModel):
     role: str | None = None
     is_active: bool | None = None
+    
+class AddUserToCompanySchema(BaseModel):
+    user_id: UUID
+    role: str
