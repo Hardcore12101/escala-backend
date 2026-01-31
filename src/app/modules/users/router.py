@@ -8,6 +8,7 @@ from src.app.modules.auth.dependencies import get_current_user
 from src.app.modules.users.models import User
 from src.app.modules.users.schemas import UserCreate, UserResponse
 from src.app.modules.users.service import create_user
+from src.app.core.security import admin_only
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -27,7 +28,7 @@ def read_me(
 def create_new_user(
     data: UserCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(admin_only),
 ):
     # futuramente aqui entra controle de permissão (admin)
     existing = db.query(User).filter(User.email == data.email).first()
@@ -47,6 +48,7 @@ def create_new_user(
 def make_system_admin(
     user_id: int,
     db: Session = Depends(get_db),
+    current_user: User = Depends(admin_only),
 ):
     system_company = db.query(Company).filter(
         Company.name == "Escala Digital"

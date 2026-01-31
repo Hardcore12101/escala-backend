@@ -11,7 +11,7 @@ from src.app.modules.guides.service import generate_guide
 from src.app.modules.guides.models import Guide
 from src.app.modules.guides.schemas import GuideOut, GuidePayRequest
 from src.app.modules.guides.service import pay_guide
-
+from src.app.core.security import admin_only
 
 
 router = APIRouter(prefix="/guides", tags=["Guides"])
@@ -25,7 +25,7 @@ router = APIRouter(prefix="/guides", tags=["Guides"])
 def create_guide(
     data: GuideCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(admin_only),
 ):
     return generate_guide(
         db=db,
@@ -65,7 +65,8 @@ def list_guides(db: Session = Depends(get_db)):
 @router.patch("/{guide_id}/pay")
 def mark_as_paid(
     guide_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(admin_only),
 ):
     guide = db.query(Guide).filter(Guide.id == guide_id).first()
 
@@ -86,6 +87,7 @@ def pay_guide_endpoint(
     guide_id: int,
     data: GuidePayRequest,
     db: Session = Depends(get_db),
+    current_user: User = Depends(admin_only),
 ):
     try:
         return pay_guide(

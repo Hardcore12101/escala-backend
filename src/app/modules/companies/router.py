@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
-
+from src.app.core.security import admin_only
 from src.app.database.dependencies import get_db
 from src.app.modules.auth.dependencies import get_current_user
 from src.app.modules.users.models import User
@@ -27,7 +27,7 @@ router = APIRouter(prefix="/companies", tags=["Companies"])
 def create_new_company(
     data: CompanyCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(admin_only),
 ):
     return create_company(db, data, current_user)
 
@@ -40,7 +40,7 @@ def get_companies(
     sort: str = "name",
     order: str = "asc",
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(admin_only),
 ):
     return list_companies(
         db, current_user, page, limit, search, sort, order
@@ -52,7 +52,7 @@ def update_company_route(
     company_id: int,
     data: CompanyUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(admin_only),
 ):
     try:
         return update_company(db, company_id, data, current_user)
@@ -64,7 +64,7 @@ def update_company_route(
 def delete_company_route(
     company_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(admin_only),
 ):
     try:
         delete_company(db, company_id, current_user)

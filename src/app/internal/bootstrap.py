@@ -6,6 +6,7 @@ from src.app.core.security import get_db
 from src.app.core.security import get_password_hash
 from src.app.modules.users.models import User
 from src.app.core.config import settings
+from src.app.core.security import admin_only
 
 router = APIRouter(prefix="/internal", tags=["internal"])
 
@@ -14,6 +15,7 @@ router = APIRouter(prefix="/internal", tags=["internal"])
 def bootstrap_admin(
     secret: str,
     db: Session = Depends(get_db),
+    current_user: User = Depends(admin_only),
 ):
     if secret != settings.BOOTSTRAP_SECRET:
         raise HTTPException(
