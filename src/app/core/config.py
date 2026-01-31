@@ -17,6 +17,11 @@ class AppSettings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
+    # 👇 ADICIONE ISSO
+    BOOTSTRAP_SECRET: str
+    ADMIN_EMAIL: str
+    ADMIN_PASSWORD: str
+    
     # Database
     DATABASE_URL: str
 
