@@ -1,7 +1,10 @@
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String, Boolean, DateTime
 from src.app.database.base import Base
 from src.app.database.association_roles import user_company_role
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import func
+from sqlalchemy.dialects.postgresql import UUID
+from uuid import uuid4
 
 class User(Base):
     __tablename__ = "users"
