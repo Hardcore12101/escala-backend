@@ -14,11 +14,15 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], 
-    allow_credentials=False,
+    allow_origins=[
+        "http://localhost:5173",  # frontend local
+        "https://SEU-FRONTEND.up.railway.app",  # quando subir o front
+    ],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 app.include_router(health_router)
 app.include_router(api_router)
