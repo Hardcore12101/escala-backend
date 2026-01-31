@@ -29,3 +29,19 @@ def login(
         "access_token": access_token,
         "token_type": "bearer",
     }
+
+
+@router.get("/debug/password-test")
+def debug_password():
+    from src.app.core.security import verify_password, get_password_hash
+
+    senha = "Escala123!"
+    hash_banco = "$2b$12$AyMt8yT.odXDHxwk.6J/2OjcXY0Ee0qlCJR.W7fFJdVw89ELhs78K"
+
+    return {
+        "verify_with_db_hash": verify_password(senha, hash_banco),
+        "verify_with_new_hash": verify_password(
+            senha,
+            get_password_hash(senha)
+        )
+    }
