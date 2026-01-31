@@ -24,3 +24,15 @@ class User(Base):
         secondary=user_company_role,
         back_populates="users",
     )
+
+class UserCompany(Base):
+    __tablename__ = "user_companies"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    company_id = Column(Integer, ForeignKey("companies.id"), nullable=False)
+
+    role = Column(String, nullable=False, default="member")
+    is_active = Column(Boolean, default=True)
+
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

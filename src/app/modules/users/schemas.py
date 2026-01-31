@@ -1,15 +1,20 @@
 from pydantic import BaseModel, EmailStr
-
+from uuid import UUID
 
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
-
+    role: str = "user"
 
 class UserResponse(BaseModel):
-    id: int
+    id: UUID
     email: EmailStr
+    role: str
     is_active: bool
 
     class Config:
         from_attributes = True
+
+class UserUpdate(BaseModel):
+    role: str | None = None
+    is_active: bool | None = None
