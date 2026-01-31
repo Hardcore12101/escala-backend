@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
 from src.app.database.base import Base
 from src.app.database.association_roles import user_company_role
 from sqlalchemy.orm import relationship
