@@ -1,7 +1,7 @@
 """convert users.id to uuid safely (safe, fk-aware)
 
 Revision ID: 3cab2b657184
-Revises: bcb7635615ff
+Revises: d36c21687e3c
 Create Date: 2026-01-31 09:51:42.480759
 
 """
@@ -11,7 +11,7 @@ from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision = "3cab2b657184"
-down_revision = "bcb7635615ff"
+down_revision = "d36c21687e3c"
 branch_labels = None
 depends_on = None
 
