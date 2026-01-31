@@ -10,27 +10,34 @@ router = APIRouter(prefix="/internal", tags=["internal"])
 
 
 @router.post("/bootstrap")
-def bootstrap_admin(x_bootstrap_secret: str = Header(...)):
-    if x_bootstrap_secret != settings.BOOTSTRAP_SECRET:
-        raise HTTPException(status_code=403, detail="Forbidden")
-
-    db: Session = SessionLocal()
-    try:
-        user = db.query(User).filter(User.email == settings.ADMIN_EMAIL).first()
-
-        if user:
-            return {"status": "admin already exists"}
-
-        admin = User(
-            email=settings.ADMIN_EMAIL,
-            hashed_password=get_password_hash(settings.ADMIN_PASSWORD),
-            is_active=True,
-            is_admin=True,
+def bootstrap_admin(
+    secret: str,
+    db: Session = Depends(get_db),
+):
+    if secret != settings.BOOTSTRAP_SECRET:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid bootstrap secret",
         )
 
-        db.add(admin)
-        db.commit()
+    admin_exists = db.query(User).filter(User.role == "admin").first()
+    if admin_exists:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Admin already exists",
+        )
 
-        return {"status": "admin created"}
-    finally:
-        db.close()
+    hashed_password = get_password_hash(settings.ADMIN_PASSWORD)
+
+    admin_user = User(
+        email=settings.ADMIN_EMAIL,
+        hashed_password=hashed_password,
+        role="admin",
+        is_active=True,
+    )
+
+    db.add(admin_user)
+    db.commit()
+    db.refresh(admin_user)
+
+    return {"message": "Admin created successfully"}
