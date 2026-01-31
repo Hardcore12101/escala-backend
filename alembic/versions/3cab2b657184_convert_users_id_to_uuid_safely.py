@@ -55,6 +55,12 @@ def upgrade():
     # 4. Apagar coluna antiga user_id
     # =====================================
     op.drop_column("user_company_role", "user_id")
+    # garante unicidade do id_uuid antes das FKs
+    op.create_unique_constraint(
+        "uq_users_id_uuid",
+        "users",
+        ["id_uuid"],
+    )
 
     # ===================================================
     # 5. Criar nova FK UUID → users.id_uuid
