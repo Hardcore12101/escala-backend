@@ -1,4 +1,4 @@
-import src.app.models
+from src.app.models.company import Company
 from sqlalchemy.orm import Session
 from src.app.database.session import SessionLocal
 from src.app.modules.users.models import User
