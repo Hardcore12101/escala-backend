@@ -3,7 +3,8 @@ from src.app.modules.users.models import User
 from src.app.modules.auth.security import hash_password
 from src.app.modules.audit.service import log_event
 from src.app.core.security import get_password_hash
-
+from uuid import UUID
+from sqlalchemy.dialects.postgresql import UUID
 
 def create_user(db, data, admin_user):
     user = User(
