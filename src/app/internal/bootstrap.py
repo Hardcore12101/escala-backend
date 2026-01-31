@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Header, HTTPException
 from sqlalchemy.orm import Session
 
-from app.database.session import SessionLocal
-from app.modules.users.models import User
-from app.core.security import get_password_hash
-from app.core.config import settings
+from src.app.database.session import SessionLocal
+from src.app.modules.users.models import User
+from src.app.core.security import get_password_hash
+from src.app.core.config import settings
 
 router = APIRouter(prefix="/internal", tags=["internal"])
 
