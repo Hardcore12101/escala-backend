@@ -16,7 +16,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",  # frontend local
-        "https://escala-backend-production.up.railway.app",  # quando subir o front
+        "https://escala-backend-production.up.railway.app/api",  # quando subir o front
     ],
     allow_credentials=True,
     allow_methods=["*"],
