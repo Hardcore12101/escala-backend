@@ -6,9 +6,10 @@ from src.app.api import api_router
 from src.app.database.session import SessionLocal
 from src.app.database.seed import seed_system_company
 from sqlalchemy.exc import OperationalError
+from src.app.internal.bootstrap import router as bootstrap_router
+
 
 app = FastAPI()
-
 
 
 app.add_middleware(
@@ -21,3 +22,4 @@ app.add_middleware(
 
 app.include_router(health_router)
 app.include_router(api_router)
+app.include_router(bootstrap_router)
