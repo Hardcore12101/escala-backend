@@ -7,7 +7,7 @@ from src.app.core.config import settings
 from src.app.database.dependencies import get_db
 from src.app.modules.users.models import User
 from src.app.modules.audit.service import log_event
-
+from uuid import UUID
 
 
 
@@ -33,7 +33,7 @@ def get_current_user(
     except JWTError:
         raise credentials_exception
 
-    user = db.query(User).filter(User.id == int(user_id)).first()
+    user = db.query(User).filter(User.id == UUID(user_id)).first()
     if user is None:
         raise credentials_exception
 
