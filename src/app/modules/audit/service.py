@@ -10,14 +10,14 @@ def log_event(
     user_id: UUID | None,
     entity: str | None = None,
     entity_id: UUID | None = None,
-    metadata: dict | None = None,
+    event_data: dict | None = None,
 ) -> None:
     log = AuditLog(
         action=action,
         user_id=user_id,
         entity=entity,
         entity_id=entity_id,
-        metadata=metadata,
+        event_data=event_data,
     )
 
     db.add(log)
