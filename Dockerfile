@@ -15,7 +15,8 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 # Código
 COPY . .
 
-ENV PYTHONPATH=/app
+ENV PYTHONPATH=/app/src
 
 # Start: roda migrations e sobe a API
-CMD ["sh", "-c", "alembic upgrade head && uvicorn src.app.main:app --host 0.0.0.0 --port ${PORT}"]
+CMD ["sh", "-c", "echo 'ANTES ALEMBIC' && alembic upgrade head && echo 'ANTES UVICORN' && exec uvicorn app.main:app --host 0.0.0.0 --port $PORT"]
+
