@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, func
+from sqlalchemy import Column, Integer, String, DateTime, func, ForeignKey
 from datetime import datetime
 from src.app.database.base import Base
 from sqlalchemy.dialects.postgresql import UUID
@@ -13,7 +13,8 @@ class AuditLog(Base):
     id = Column(Integer, primary_key=True)
     action = Column(String, nullable=False)
 
-    user_id = Column(UUID(as_uuid=True), nullable=False)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
+
 
     entity = Column(String, nullable=True)
     entity_id = Column(Integer, nullable=True)
