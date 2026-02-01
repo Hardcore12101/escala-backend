@@ -13,15 +13,10 @@ class AuditLog(Base):
     id = Column(Integer, primary_key=True)
     action = Column(String, nullable=False)
 
+    entity = Column(String, nullable=False)
+    entity_id = Column(UUID(as_uuid=True), nullable=True)
+
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
 
-
-    entity = Column(String, nullable=True)
-    entity_id = Column(Integer, nullable=True)
-
-    extra = Column("metadata", JSON, nullable=True)
-
-    created_at = Column(
-        DateTime(timezone=True),
-        server_default=func.now()
-    )
+    metadata = Column(JSON, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

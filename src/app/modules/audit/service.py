@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from uuid import UUID
 from src.app.modules.audit.models import AuditLog
 
 
@@ -6,11 +7,11 @@ def log_event(
     db: Session,
     *,
     action: str,
-    user_id: str,
+    user_id: UUID | None,
     entity: str | None = None,
-    entity_id: int | None = None,
+    entity_id: UUID | None = None,
     metadata: dict | None = None,
-):
+) -> None:
     log = AuditLog(
         action=action,
         user_id=user_id,
@@ -18,5 +19,11 @@ def log_event(
         entity_id=entity_id,
         metadata=metadata,
     )
+
     db.add(log)
-    db.commit()
+
+    try:
+        db.commit()
+    except Exception:
+        db.rollback()
+        raise

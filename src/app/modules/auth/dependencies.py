@@ -37,12 +37,16 @@ def get_current_user(
     if user is None:
         raise credentials_exception
 
-    log_event(
-        db,
-        action="ACCESS_ROUTE",
-        user_id=str(user.id),
-        entity="user",
-        entity_id=user.id,
-    )
+    try:
+        log_event(
+            db,
+            action="ACCESS_ROUTE",
+            entity="user",
+            entity_id=user.id,
+            user_id=user.id,
+        )
+    except Exception as e:
+        db.rollback()
+        # opcional: logger.warning(e)
 
     return user
