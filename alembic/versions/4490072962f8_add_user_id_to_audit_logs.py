@@ -42,17 +42,16 @@ def upgrade() -> None:
     op.create_foreign_key(None, 'audit_logs', 'users', ['user_id'], ['id'])
     op.drop_index(op.f('ix_companies_cnpj'), table_name='companies')
     op.drop_index(op.f('ix_companies_id'), table_name='companies')
-    op.create_unique_constraint(None, 'companies', ['cnpj'])
+    
     op.alter_column('user_company_role', 'user_id',
                existing_type=sa.UUID(),
                nullable=False)
-    op.drop_constraint(op.f('user_company_role_user_id_fkey'), 'user_company_role', type_='foreignkey')
+    
     op.create_foreign_key(None, 'user_company_role', 'users', ['user_id'], ['id'])
     op.alter_column('users', 'created_at',
                existing_type=postgresql.TIMESTAMP(timezone=True),
                nullable=True,
                existing_server_default=sa.text('now()'))
-    op.drop_constraint(op.f('uq_users_id_uuid'), 'users', type_='unique')
     # ### end Alembic commands ###
 
 
