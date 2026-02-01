@@ -32,7 +32,7 @@ def create_new_company(
     return create_company(db, data, current_user)
 
 
-@router.get("/companies")
+@router.get("")
 def list_companies(
     page: int = Query(1, ge=1),
     limit: int = Query(10, ge=1, le=100),
@@ -42,7 +42,7 @@ def list_companies(
     db: Session = Depends(get_db),
     user: User = Depends(get_current_user),
 ):
-    return services.list_companies(
+    return service.list_companies(
         db=db,
         user=user,
         page=page,
