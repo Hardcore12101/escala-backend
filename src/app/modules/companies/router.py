@@ -33,7 +33,7 @@ def create_new_company(
 
 
 @router.get("")
-def list_companies(
+def get_companies(
     page: int = Query(1, ge=1),
     limit: int = Query(10, ge=1, le=100),
     search: str | None = Query(None),
