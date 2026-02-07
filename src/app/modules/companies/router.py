@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
-from src.app.core.security import admin_only
+
 from src.app.database.dependencies import get_db
 from src.app.modules.auth.dependencies import get_current_user
 from src.app.modules.users.models import User
@@ -27,30 +27,17 @@ router = APIRouter(prefix="/companies", tags=["Companies"])
 def create_new_company(
     data: CompanyCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(admin_only),
+    current_user: User = Depends(get_current_user),
 ):
     return create_company(db, data, current_user)
 
 
-@router.get("")
+@router.get("", response_model=list[CompanyResponse])
 def get_companies(
-    page: int = Query(1, ge=1),
-    limit: int = Query(10, ge=1, le=100),
-    search: str | None = Query(None),
-    sort: str = Query("name"),
-    order: str = Query("asc"),
     db: Session = Depends(get_db),
-    user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
 ):
-    return list_companies(
-        db=db,
-        user=user,
-        page=page,
-        limit=limit,
-        search=search,
-        sort=sort,
-        order=order,
-    )
+    return list_companies(db, current_user)
 
 
 @router.put("/{company_id}", response_model=CompanyResponse)
@@ -58,21 +45,15 @@ def update_company_route(
     company_id: int,
     data: CompanyUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(admin_only),
+    current_user: User = Depends(get_current_user),
 ):
-    try:
-        return update_company(db, company_id, data, current_user)
-    except ValueError:
-        raise HTTPException(status_code=404, detail="Empresa não encontrada")
+    return update_company(db, company_id, data, current_user)
 
 
 @router.delete("/{company_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_company_route(
     company_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(admin_only),
+    current_user: User = Depends(get_current_user),
 ):
-    try:
-        delete_company(db, company_id, current_user)
-    except ValueError:
-        raise HTTPException(status_code=404, detail="Empresa não encontrada")
+    delete_company(db, company_id, current_user)

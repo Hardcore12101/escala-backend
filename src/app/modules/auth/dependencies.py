@@ -1,15 +1,12 @@
 from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from sqlalchemy.orm import Session
-from src.app.core.security import oauth2_scheme
-from src.app.core.config import settings
-from src.app.database.dependencies import get_db
-from src.app.modules.users.models import User
-from src.app.modules.audit.service import log_event
 from uuid import UUID
 
-
+from src.app.core.config import settings
+from src.app.core.security import oauth2_scheme
+from src.app.database.dependencies import get_db
+from src.app.modules.users.models import User
 
 def get_current_user(
     token: str = Depends(oauth2_scheme),
@@ -27,26 +24,16 @@ def get_current_user(
             settings.SECRET_KEY,
             algorithms=[settings.ALGORITHM],
         )
-        user_id: str | None = payload.get("sub")
-        if user_id is None:
+        user_id = payload.get("sub")
+        if not user_id:
             raise credentials_exception
-    except JWTError:
+
+        user_uuid = UUID(user_id)
+    except (JWTError, ValueError):
         raise credentials_exception
 
-    user = db.query(User).filter(User.id == UUID(user_id)).first()
-    if user is None:
+    user = db.query(User).filter(User.id == user_uuid).first()
+    if not user or not user.is_active:
         raise credentials_exception
-
-    try:
-        log_event(
-            db,
-            action="ACCESS_ROUTE",
-            entity="user",
-            entity_id=user.id,
-            user_id=user.id,
-        )
-    except Exception as e:
-        db.rollback()
-        # opcional: logger.warning(e)
 
     return user
