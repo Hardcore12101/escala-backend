@@ -1,14 +1,19 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from src.app.modules.permissions.enums import RoleEnum
-from src.app.models.company import Company
+from uuid import UUID
+
 from src.app.database.dependencies import get_db
 from src.app.modules.auth.dependencies import get_current_user
 from src.app.modules.users.models import User
-from src.app.modules.users.schemas import UserCreate, UserResponse, UserUpdate
-from src.app.modules.users.service import create_user, update_user
-from uuid import UUID
-from src.app.modules.users.schemas import AddUserToCompanySchema
+from src.app.modules.users.schemas import (
+    UserCreate,
+    UserResponse,
+    UserUpdate,
+)
+from src.app.modules.users.service import (
+    create_user,
+    update_user,
+)
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
@@ -17,77 +22,68 @@ router = APIRouter(prefix="/users", tags=["Users"])
 def read_me(
     current_user: User = Depends(get_current_user),
 ):
+    """
+    Retorna o usuário autenticado
+    """
     return current_user
 
 
-@router.post("", response_model=UserResponse)
+@router.post(
+    "",
+    response_model=UserResponse,
+    status_code=status.HTTP_201_CREATED,
+)
 def create_new_user(
     data: UserCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(admin_only),
 ):
-    return create_user(db, data, current_user)
+    """
+    Criação de usuário (signup)
+    Não requer autenticação
+    """
+    return create_user(db, data)
 
 
-@router.get("", response_model=list[UserResponse])
+@router.get(
+    "",
+    response_model=list[UserResponse],
+)
 def list_users(
     db: Session = Depends(get_db),
-    current_user: User = Depends(admin_only),
+    current_user: User = Depends(get_current_user),
 ):
+    """
+    Lista usuários do sistema
+    (temporário – depois pode ser restringido)
+    """
     return db.query(User).all()
 
 
-@router.patch("/{user_id}", response_model=UserResponse)
+@router.patch(
+    "/{user_id}",
+    response_model=UserResponse,
+)
 def update_user_route(
-    user_id: str,
+    user_id: UUID,
     data: UserUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(admin_only),
+    current_user: User = Depends(get_current_user),
 ):
-    try:
-        return update_user(db, user_id, data, current_user)
-    except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
-
-@router.post("/make-admin/{user_id}")
-def make_system_admin(
-    user_id: UUID,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(admin_only),
-):
-    system_company = db.query(Company).filter(
-        Company.name == "Escala Digital"
-    ).first()
-
-    if not system_company:
-        raise HTTPException(status_code=500, detail="Empresa do sistema não existe")
-
-    db.execute(
-        user_company_role.insert().values(
-            user_id=user_id,
-            company_id=system_company.id,
-            role=RoleEnum.ADMIN.value,
+    """
+    Atualiza um usuário.
+    Regra atual:
+    - usuário só pode atualizar a si mesmo
+    """
+    if current_user.id != user_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Você não pode alterar outro usuário",
         )
-    )
-    db.commit()
 
-    return {"ok": True}
-    
-    
-@router.post(
-    "/companies/{company_id}/users",
-    response_model=None,
-)
-def add_user_to_company_route(
-    company_id: UUID,
-    data: AddUserToCompanySchema,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(admin_only),
-):
-    add_user_to_company(
-        db=db,
-        current_user=current_user,
-        target_user_id=data.user_id,
-        company_id=company_id,
-        role=data.role,
-    )
+    try:
+        return update_user(db, user_id, data)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(e),
+        )
