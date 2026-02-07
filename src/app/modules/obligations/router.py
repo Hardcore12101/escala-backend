@@ -9,7 +9,6 @@ from src.app.modules.obligations.schemas import (
     ObligationResponse,
 )
 from src.app.modules.obligations.service import create_obligation
-from src.app.core.security import admin_only
 
 router = APIRouter(prefix="/obligations", tags=["Obligations"])
 
@@ -17,12 +16,12 @@ router = APIRouter(prefix="/obligations", tags=["Obligations"])
 @router.post(
     "",
     response_model=ObligationResponse,
-    status_code=status.HTTP_201_CREATED
+    status_code=status.HTTP_201_CREATED,
 )
 def create_new_obligation(
     data: ObligationCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(admin_only),
+    current_user: User = Depends(get_current_user),
 ):
     return create_obligation(
         db=db,
