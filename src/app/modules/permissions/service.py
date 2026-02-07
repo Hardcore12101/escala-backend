@@ -1,5 +1,4 @@
 from sqlalchemy.orm import Session
-from src.app.database.association_roles import user_company_role
 from src.app.modules.permissions.enums import RoleEnum
 
 

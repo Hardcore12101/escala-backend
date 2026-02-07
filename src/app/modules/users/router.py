@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from src.app.database.association_roles import user_company_role
 from src.app.modules.permissions.enums import RoleEnum
 from src.app.models.company import Company
 from src.app.database.dependencies import get_db

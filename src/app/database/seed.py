@@ -3,7 +3,6 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from src.app.models.company import Company
 from src.app.modules.users.models import User
-from src.app.database.association_roles import user_company_role
 from src.app.modules.permissions.enums import RoleEnum
 from src.app.core.security import get_password_hash
 
