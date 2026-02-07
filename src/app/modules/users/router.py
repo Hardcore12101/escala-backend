@@ -8,7 +8,6 @@ from src.app.modules.users.models import User
 from src.app.modules.users.schemas import UserCreate, UserResponse, UserUpdate
 from src.app.modules.users.service import create_user, update_user
 from uuid import UUID
-from src.app.modules.companies.service import add_user_to_company
 from src.app.modules.users.schemas import AddUserToCompanySchema
 
 router = APIRouter(prefix="/users", tags=["Users"])
