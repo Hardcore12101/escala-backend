@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 
-from src.app.core.security import get_db
+from src.app.database.database import get_db
 from src.app.core.security import get_password_hash
 from src.app.modules.users.models import User
 from src.app.core.config import settings
