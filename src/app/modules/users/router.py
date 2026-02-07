@@ -7,7 +7,6 @@ from src.app.modules.auth.dependencies import get_current_user
 from src.app.modules.users.models import User
 from src.app.modules.users.schemas import UserCreate, UserResponse, UserUpdate
 from src.app.modules.users.service import create_user, update_user
-from src.app.core.security import admin_only
 from uuid import UUID
 from src.app.modules.companies.service import add_user_to_company
 from src.app.modules.users.schemas import AddUserToCompanySchema
